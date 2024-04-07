@@ -15,11 +15,11 @@ const { error } = require('console');
 
 const app = express();
 
-app.use(cors({
-  origin: ["https://deploy-mern-1whq.vercel.app"],
-  methods: ["POST", "GET"],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: ["https://deploy-mern-1whq.vercel.app"],
+//   methods: ["POST", "GET"],
+//   credentials: true
+// }));
 
 // const myDB = 'mongodb://127.0.0.1:27017/genesix'; 
 const myDB = 'mongodb+srv://GX-movie-admin:Amaga2003@genesix.yplxhqc.mongodb.net/';
