@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background-color: #554f4f58;
+    }
+    ::selection{
+      background-color: crimson;
+    }
+    .admin-user-details{
+      width: 500px;
+      height: 500px;
+      background-color: #3230302f;
+      border-top-right-radius: 20px;
+      border-bottom-left-radius: 20px;
+      padding: 20px;
+      border: 2px solid #00000064;
+      box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.433);
+      margin: auto;
+    }
+    .admin-user-details .users{
+      /* margin: auto; */
+      width: 100%;
+      height: 100%;
+      background-color: #52505058;
+      border-top-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.433); 
+      overflow-y: scroll;
+      padding-top: 10px;
+    }
+    .admin-user-details .users::-webkit-scrollbar{
+      display: none;
+    }
+    .profile-cover .profile-img{
+      width: 150px;
+      height: 150px;
+      border-radius: 150px;
+      border: 3px dotted rgb(122, 116, 116);
+      margin-left: 170px;
+    }
+    .trash{
+      width: 20px;
+    }
+    .profile-cover{
+      line-height: 30px;
+    }
+    .account-details{
+      margin: auto;
+      text-align: center;
+      background-color: #fff;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .account-details span{
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Times New Roman', Times, serif;
+    }
+    .edit-profile button{
+      margin-top: 10px;
+      margin-left: 150px;
+      background-color: transparent;
+      border: none;
+    }
+    .edit-profile .trash:hover{
+      transform: skew(10deg);
+    }
+    .footer{
+      margin-top: 30px;
+      text-align: center;
+      color: #00000021;
+    }
+    /*delt-q-----------*/
+    .delt-wrapper{
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.604);
+      display: none;
+    }
+    .show-delt-wrapper{
+      display: block;
+    }
+    .delt-wrapper .delt-q{
+      background-color: #fff;
+      width: 350px;
+      height: 200px;
+      margin: auto;
+      border-radius: 20px;
+      text-align: center;
+      padding: 20px;
+      margin-top: 150px;
+      animation-name: move;
+      animation-duration: 1s;
+      animation-timing-function: ease-in;
+      animation-direction: normal;
+    }
+    .delt-wrapper .delt-q div{
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .delt-wrapper .delt-q button{
+      width: 150px;
+      height: 70px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid rgb(158, 153, 153);
+      box-shadow: 10px 5px 10px;
+    }
+    .delt-wrapper .delt-q button:hover{
+      border: 2px solid rgb(158, 153, 153);
+    }
+    .yes{
+      background-color: green;
+    }
+    .no{
+      background-color: rgb(241, 14, 14);
+      margin-left: 10px;
+      
+    }
+    .make-admin{
+      padding: 5px;
+    }
+    .maddo{
+      display: none;
+    }
+    .show-maddo{
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-user-details">
+    <div class="users">
+      <div class="profile-cover">
+        <div class="details-cover">
+          <div class="p-img-cover">
+            <% if (user) { %>
+              <% if (user.imag) {%>
+                <img src="/uploads/<%= user.imag %>" class="profile-img">
+           <% } else {%>
+              <img src="/images/man.png" alt="" class="profile-img">
+           <% } %> 
+          <% } %> 
+          </div>
+          <div class="account-details">
+            <div>
+              <span>Name:</span>
+              <% if (user) { %>
+                <% if(user.firstname) {%>
+                  <%= user.firstname %>  <%= user.lastname %>  <%= user.middlename %>
+               <%} else { %>  
+                  Nil
+                <% } %>
+               <% } %>
+            </div>
+            <div><span>Email:</span><%= user.email %></div>
+            <div>
+              <span>Phone:</span>
+              <% if (user) { %>
+                <% if(user.phonenumber) {%>
+                  <%= user.phonenumber %>
+               <%} else { %>  
+                  Nil
+                <% } %>
+               <% } %>
+            </div>
+            <div>
+              <span>D.O.B:</span>
+              <% if (user) { %>
+                <% if(user.dob) {%>
+                  <%= user.dob %>
+               <%} else { %>  
+                  Nil
+                <% } %>
+               <% } %>
+               <div><span>Gender:</span> F </div>
+               <div><span>Age:</span>21</div>
+            </div>
+          </div>
+          <div class="edit-profile">
+            <button>
+              <img src="/images/trash-bin.png" class="trash" onclick="showWrapper()"  alt="">
+            </button>
+          </div>
+          <button class="make-admin" data-doc="<%= user._id %>">Make admin</button>
+          <button class="remove-admin" data-doc="<%= user._id %>">Remove admin</button>
+          <div class="footer">
+             <!--copyright------>
+        <span class="copyright">
+          Copyright 2024 - GeNeSix
+        </span>
+          </div>
+        </div> 
+        </div>
+    </div>
+
+    <div class="delt-wrapper">
+      <div class="delt-q">
+        <div>Are You sure you want to delete this user ?</div>
+        <div class="btns"><button class="yes delete-user" data-doc="<%= user._id %>">Yes</button> <button class="no" onclick="removeWrapper()">No</button></div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <button class="type">mine</button>
+  <img src="/images/man.png" alt="" class="maddo">
+
+  <script>
+    
+
+     let deleteUser = document.querySelector('.delete-user');
+     let deltWrapper = document.querySelector('.delt-wrapper');
+     let trash = document.querySelector('.trash');
+     let makeAdmin = document.querySelector('.make-admin');
+     let removeAdmin = document.querySelector('.remove-admin');
+     let status = 'ADMIN';
+     let remove = 'REGULAR';
+     let type = document.querySelector('.type');
+     let maddo = document.querySelector('.maddo')
+
+    type.addEventListener('click', (e)=>{
+      if(!maddo.classList.contains('show-maddo')){
+        maddo.classList.add('show-maddo');
+      }else{
+        maddo.classList.remove('show-maddo')
+      }
+    })
+
+
+
+    function showWrapper(){
+     
+      if(!deltWrapper.classList.contains('show-delt-wrapper')){
+        deltWrapper.classList.add('show-delt-wrapper');
+      }else{
+        deltWrapper.classList.remove('show-delt-wrapper');
+      }
+              
+    }
+
+    function removeWrapper(){
+      deltWrapper.classList.remove('show-delt-wrapper');
+    }
+
+
+
+    makeAdmin.addEventListener('click',(e) => {
+      const endpoint = `/admin/adminStatus/${makeAdmin.dataset.doc}`;
+
+      console.log(endpoint);
+
+
+      fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({ status }),
+        headers:{'Content-Type': 'application/json'}
+      })
+       .then((response) => response.json())
+       .then((data) => window.location.href = '/admin')
+       .catch(err => {
+        console.log(err);
+       })
+
+    }); 
+
+
+    makeAdmin.addEventListener('click',(e) => {
+      const endpoint = `/admin/adminStatus/${removeAdmin.dataset.doc}`;
+
+      console.log(endpoint);
+
+
+      fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({ remove }),
+        headers:{'Content-Type': 'application/json'}
+      })
+       .then((response) => response.json())
+       .then((data) => window.location.href = '/admin')
+       .catch(err => {
+        console.log(err);
+       })
+
+    }); 
+
+
+
+    deleteUser.addEventListener('click',(e) => {
+      const endpoint = `/admin/${deleteUser.dataset.doc}`;
+
+      console.log(endpoint);
+
+
+      fetch(endpoint, {
+        method: 'DELETE'
+      })
+       .then((response) => response.json())
+       .then((data) => window.location.href = '/admin')
+       .catch(err => {
+        console.log(err);
+       })
+
+    }); 
+
+  </script>
+</body>
+</html>

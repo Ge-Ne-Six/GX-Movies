@@ -1,0 +1,133 @@
+<nav class="navigation">
+
+  <input type="checkbox" class="menu-btn" id="menu-btn">
+  <label for="menu-btn" class="menu-icon">
+      <span class="nav-icon"></span>
+  </label>
+
+  <!-- logo--------------------------- -->
+  <a href="/genesix" class="logo">
+      Gx-Movies<span >.hd</span>
+  </a>
+
+  <!-- menu------------=--------->
+  <ul class="menu">
+      <li><a href="/genesix">Home</a></li>
+      <li><a href="/genesix/movie">Movies</a></li>
+      <li><a href="/genesix/series">Series</a></li>
+      <li><a href="/genesix/animation"> Animation</a></li>
+      <li><a href="#">Contact</a></li>
+  </ul>
+
+
+
+    <div class="dropdown">
+      <button class="dropbtn">
+        <% if (user) { %>
+          <% if (user.imag) {%>
+            <img src="/uploads/<%= user.imag %>" alt="" width="40" height="40" class="rounded-circle me-2 pic">
+       <% } else {%>
+          <img src="/images/man.png"alt="" width="40" height="40" class="rounded-circle me-2 pic">
+       <% } %> 
+      <% } %>
+      </button>
+      <div class="dropdown-content">
+        <strong>
+          <% if (user) { %>
+            <% if(user.firstname) {%>
+              <%= user.firstname %>
+           <%} else { %>  
+            <%= user.email %>
+            <% } %>
+        <% } %>
+        </strong>
+        <a href="javascript:void" class="account" onclick="
+        
+        let it = document.querySelector('.profile-cover');
+
+        it.classList.add('show-profile');
+
+        ">Profile</a>
+        <hr>
+        <a href="/logout">Signout</a>
+      </div>
+    </div>
+    
+
+  <!-- search-box------------------->
+  <form action="" class="search-box">
+      <!-- input -->
+      <input type="text" name="search" placeholder="Search Movie"  class="search-input" required/>
+      <!-- btn -->
+      <button type="submit">
+          <i class="fas fa-search"></i>
+      </button>
+  </form>
+</nav>
+<!-- nav-end------ -->
+
+<!--profile-->
+<div class="profile-cover">
+<img src="/images/delete-cross.png" class="remove-img img-position" alt="" onclick="
+  document.querySelector('.profile-cover').classList.remove('show-profile');
+  ">
+<div class="details-cover">
+  <div class="p-img-cover">
+    <% if (user) { %>
+      <% if (user.imag) {%>
+        <img src="/uploads/<%= user.imag %>" class="profile-img">
+        <a href="/genesix/pic-upload"><img src="/images/plus (1).png" class="add-img" alt=""></a>
+   <% } else {%>
+      <img src="/uploads/man.png" alt="" class="profile-img">
+   <% } %> 
+  <% } %> 
+  </div>
+  <div class="account-details">
+    <div>
+      <span>Name:</span>
+      <% if (user) { %>
+        <% if(user.firstname) {%>
+          <%= user.firstname %>  <%= user.lastname %>  <%= user.middlename %>
+       <%} else { %>  
+          Nil
+        <% } %>
+       <% } %>
+    </div>
+    <div><span>Email:</span>nnamdiamaga2k20@gmail.com</div>
+    <div>
+      <span>Phone:</span>
+      <% if (user) { %>
+        <% if(user.phonenumber) {%>
+          <%= user.phonenumber %>
+       <%} else { %>  
+          Nil
+        <% } %>
+       <% } %>
+    </div>
+    <div>
+      <span>D.O.B:</span>
+      <% if (user) { %>
+        <% if(user.dob) {%>
+          <%= user.dob %>
+       <%} else { %>  
+          Nil
+        <% } %>
+       <% } %>
+    </div>
+  </div>
+  <div class="edit-profile">
+    <button>
+     <a href="/genesix/profile-Update">Edit</a>
+    </button>
+  </div>
+  <div class="footer">
+     <!--copyright------>
+<span class="copyright">
+  Copyright 2024 - GeNeSix
+</span>
+  </div>
+</div> 
+</div>
+
+<div class="pre-loader"></div> 
+

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Admin DASHBOARD</title>
+    <link rel="stylesheet" href="/newstyle.css">
+     <link rel="stylesheet" href=""body>
+     <!-- Font Awesome Cdn link-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+   <div class="sidebar">
+    <div class="logo"></div>
+    <ul class="menu">
+        <li class="active">
+           <a href="dashboard.html" >
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+           </a> 
+        </li>
+
+        <li>
+            <a href="#">
+             <i class="fas fa-user"></i>
+             <span>Profile</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="/admin/movies-upload">
+             <i class="fas fa-chart-bar"></i>
+             <span>Movie Upload</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-briefcase"></i>
+             <span>All Movies</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-star"></i>
+             <span>Testimonials</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-cog"></i>
+             <span>Settings</span>
+            </a> 
+         </li>
+
+         <li class="logout">
+            <a href="/admin/logout">
+             <i class="fas fa-sign-out-alt"></i>
+             <span>Logout</span>
+            </a> 
+         </li>
+    </ul>
+   </div>
+
+   <div class="main--content">
+    <div class="header--wrapper">
+        <div class="header--titie">
+            <span>Admin</span>
+            <h2>Dashboard</h2>
+        </div>
+        <div class="user--info">
+          <div class="search--box"> 
+        <i class="fa-solid fa-search"></i>
+        <input type="text" placeholder="search"> 
+          </div> 
+          <% if(user) {%>
+            <img src="/uploads/<%= user.imag %>" alt=""> 
+          <% } else {%>
+            <img src="/images/man.png" alt=""> 
+          <% } %>  
+          
+        </div>
+    </div>
+
+    <div class="tabular--wrapper">
+        <h3 class="main--title"> All Users data</h3>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>First-Name</th>
+                    <th>Last-Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>DLT User</th>
+                    <th>RESET password</th>
+                  </tr> 
+                  
+                  <tbody>
+
+                    <% if (User.length > 0) { %>
+                      <% for (i = 0; i < User.length; i++) { %>
+                        <% const user = User[i] %>
+                        
+                        <tr>
+                          <td><%= 1 + i %></td>
+                          <td><%= user.lastname %></td>
+                          <td><%= user.firstname %></td>
+                          <td><%= user.email %></td>
+                          <td><%= user.dob %></td>
+                          <td><a href="/admin/user/<%= user._id %>">View</a></td>
+                          <td><button>Edit</button></td>
+                        </tr>
+                      <% } %>  
+                      <% } else {%>
+                        <h3>they aren't any Users</h3>
+                      <% } %>  
+
+                  </tbody>
+
+                  <tfoot>
+                    <tr>
+                        <td>Total: $1,000</td>
+                    </tr>
+                  </tfoot>
+                </thead>
+            </table>
+        </div>
+    </div>
+   </div>
+
+   <script>
+    let deleteUser = document.querySelector('.delete-user');
+    deleteUser.addEventListener('click',(e) => {
+      const endpoint = `/${deleteUser.dataset.doc}`;
+
+      console.log(endpoint);
+
+
+      fetch(endpoint, {
+        method: 'DELETE'
+      })
+       .then((response) => response.json())
+       .then((data) => console.log(endpoint))
+       .catch(err => {
+        console.log(err);
+       })
+
+    }); 
+
+
+    
+   </script>
+</body>
+</html>

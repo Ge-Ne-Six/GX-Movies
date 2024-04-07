@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pic Upload</title>
+  <link rel="stylesheet" href="/style.css">
+    <%- include('partials/head.ejs') %> 
+</head>
+<body>
+    
+    <!--Scroll-progress-bar=======================-->
+    <div id="progress">
+        <span id="progress-value"></span>
+    </div>
+    
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="hero">
+      <form class="card" action="/pic-upload" method="post" enctype="multipart/form-data">
+        <h1>Elon Musk</h1>
+        <p>Click the below image to select new profile image</p>
+        
+        <label for="input-file">
+          <img src="/images/man.png" alt="" class="img-view">
+        </label>
+        <input type="file" accept="image/*" name="profileImage" id="input-file" class="input-file">
+        <button class="upload-btn">Update image</button>
+      </form>
+    </div>
+
+
+     <!--footer======================-->
+
+     <%- include('partials/footer') %>
+
+     <script src="/Swiper Files/swiper-bundle.min.js"></script>
+
+     <script src="/js/jquery.js"></script>
+
+     <script src="/js/home.js"></script>
+
+  <script>
+    let inputFile = document.querySelector('.input-file');
+    let imgView = document.querySelector('.img-view');
+    let img =document.querySelector('.img')
+    
+    inputFile.addEventListener('change', imageChange);
+
+    function imageChange() {
+      let imgLink = URL.createObjectURL(inputFile.files[0]);
+
+       imgView.src = imgLink;
+    }
+
+
+
+  </script>
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gx Series</title>
+    <link rel="stylesheet" href="/style.css">
+    <%- include('partials/head.ejs') %> 
+</head>
+<body>
+
+    <!--Scroll-progress-bar=======================-->
+    <div id="progress">
+        <span id="progress-value"></span>
+    </div>
+    
+    <%- include('./partials/nav.ejs') %>
+
+
+    <!--slider-end---------------->
+ 
+
+    <!--==latest-Movies------------------======-->
+    <section id="latest">
+
+        <!--heading------>
+        <div class="latest-heading">
+            <h1>Series</h1>
+        </div>
+
+        <!--container---------->
+        <div class="post-container">
+
+
+            <% if (movies.length > 0) { %>
+                <% for (i = 0; i < movies.length; i++) { %>
+                    
+                    <% const movie = movies[i] %>
+                      <% if(movie.type === 'series') { %>
+
+                         <!--post-box------------->
+                       <div class="post-box">
+                        <!--img----->
+                        <div class="post-img">
+                            <img src="/images/<%= movie.image %>" alt="">
+                        </div>
+                        <!-- text------------------ -->
+                    <div class="main-slider-text">
+                        <!-- quality-------- -->
+                        <span class="quality"><%= movie.quality %></span>
+            
+                        <!-- bottom-text -->
+                        <div class="bottom-text">
+                            <!-- name -->
+                            <div class="movie-name">
+                                <span><%= movie.year %></span>
+                                <a href="/genesix/<%= movie._id %>"><%= movie.title %></a>
+                            </div>
+            
+                            <!-- category-and-rating -->
+                            <div class="category-rating">
+                                <!-- category -->
+                     
+                                <div class="category">
+                                    <a href="#">Action</a>,<a href="#">Animation</a>,<a href="#">Thriller</a>,
+                                </div>
+                                <!-- rating -->
+                                <div class="rating">
+                                    5.2 <img src="/images/OIP (3).jpeg" alt="imbd"/>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                    </div>
+
+                      <% } %>        
+                <% } %>
+                <% } else { %>
+                  <h3> They aren't any movies </h3>
+            
+                   
+                <% } %> 
+
+        </div>
+        <!--container-end-->
+        
+        
+
+
+        <!-- page-number-----------
+        <div class="page-number">
+            <a href="#" class="page-active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            ....
+            <a href="#">100</a>
+        </div> -->
+    
+            
+        
+    </section>
+    <!--latest-post-end----------->
+
+    <%- include('./partials/search-result') %>
+
+    <!--footer======================-->
+
+    <%- include('partials/footer') %>
+
+
+
+
+
+
+
+
+    <!-- js-swiper==== -->
+    <script src="/Swiper Files/swiper-bundle.min.js"></script>
+    <!--jquery=================================================-->
+    <script src="/js/jquery.js"></script>
+
+   
+
+  <script src="/js/home.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>

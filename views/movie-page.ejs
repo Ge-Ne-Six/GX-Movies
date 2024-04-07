@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie <%= movie.title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <%- include('partials/head.ejs') %> 
+</head>
+<body> 
+    
+    <!--Scroll-progress-bar=======================-->
+    <div id="progress">
+        <span id="progress-value"></span>
+    </div>
+    
+    <%- include('./partials/nav.ejs') %>
+
+    <!--===Movie-Bannner================================================-->
+    <section class="movie-banner">
+
+        <!--===img=====================-->
+        <div class="m-banner-img">
+            <img src="/Movies/<%= movie.image %>" alt="">
+        </div>
+
+
+
+        <!-- content----============================= -->
+
+        <div class="banner-container">
+
+            <!-- title-container**************************--->
+            <div class="title-container">
+                <!--title-top==================-->
+                <div class="title-top">
+
+                <!-- title--- -->
+                <div class="movie-title">
+                    <h1>
+                      <%= movie.title %>
+                    </h1>
+                </div>
+
+                <!-- more-about-movie--------->
+                <div class="more-about-movie">
+                    <span class="quality"><%= movie.quality %></span>
+                    <div class="rating">
+                        8.2 <img src="/images/OIP (3).jpeg" alt="imbd">
+                    </div>
+                    <span><%= movie.year %></span>
+                    <span> <%= movie.length %> </span>
+                </div>
+                <!--language--------->
+                <div class="language">
+                    <span><%= movie.language %></span>
+                </div>
+
+
+                </div>
+
+
+
+                <!--title-bottom=============================================-->
+                <div class="title-bottom">
+                    <!-- category------------------- -->
+                    <div class="category">
+                        <strong>Category</strong><br/>
+                        <a href="#"><%= movie.genre %></a>
+                    </div>
+                    <!--trailer-btn-------------->
+                    <a href="#" class="watch-btn">Watch Trailer</a>
+                </div>
+                
+
+            </div>
+
+            <!-- play-btn*********************************-->
+            <div class="play-btn-container">
+                <div class="play-btn">
+                    <a href="javascript:void">
+                        <img src="/images/play.png" alt="" class="play-img">
+                    </a>
+                </div>
+            </div>
+
+
+            <!--Video/full-Movie***********************---------->
+            <div id="play" class="play">
+                <!-- close-btn---------->
+                <a href="javascript:void" class="close-movie">
+                    <img src="/images/remove.png" alt="" class="remove-img">
+                </a>
+                <!-- movie-------------->
+                <div class="play-movie">
+                    <video id="m-video" controls>
+                        <source src="/Movies/<%= movie.filePath %>" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+
+        </div>
+
+    </section>
+    <!--Banner-end-------------------------->
+    
+
+
+
+
+    <!--details===========================================-->
+    <section class="movie-details">
+      <strong>
+        <%= movie.title %>
+      </strong>
+      <p><%= movie.description %></p>
+    </section>
+
+    <!--ScreenShots=======================================-->
+    <!-- <section class="screenshots">
+
+    </section> -->
+
+    <!--Download------------------>
+    <section class="download-movie">
+
+      <!--container------------>
+      <div class="download-container">
+        <!-- box -->
+        <div class="download-box">
+          <span><i class="fas fa-server"></i> Server 1</span>
+          <span><%= movie.language %></span>
+          <span>480p</span>
+          <a href="#" download="/Movies/<%= movie.filePath %>">Download</a>
+        </div>
+        <div class="download-box">
+          <span><i class="fas fa-server"></i> Server 2</span>
+          <span>English</span>
+          <span>720p</span>
+          <a href="#" download="/public/Movies/<%= movie.filePath %>">Download</a>
+        </div>
+        <div class="download-box">
+          <span><i class="fas fa-server"></i> Server 3</span>
+          <span><%= movie.language %></span>
+          <span>1080p</span>
+          <a href="#">Download</a>
+        </div>
+      </div>
+    </section>
+
+    <%- include('./partials/search-result') %>
+
+    <%- include('partials/footer') %>
+
+
+
+    <!--jquery=================================================-->
+    <script src="/js/jquery.js"></script>
+
+  <script src="/js/movie-page.js"></script>
+  <script src="/js/search.js"></script>
+
+</body>
+
+</html>

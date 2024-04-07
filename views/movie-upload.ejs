@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Admin DASHBOARD</title>
+    <link rel="stylesheet" href="/newstyle.css">
+     <link rel="stylesheet" href=""body>
+     <!-- Font Awesome Cdn link-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+      body {
+        font-family: Arial, sans-serif;
+        /* margin: 0; */
+        /* padding: 20px; */
+      }
+  
+      #movie-form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.681);
+        border-radius: 20px;
+        box-shadow: 0px 9px 11px 7px #fff;
+        color: aliceblue;
+      }
+  
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+  
+      input[type="text"],
+      input[type="file"],
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+      }
+  
+      textarea {
+        width: 100%;
+        height: 100px;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+      }
+  
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+</head>
+<body>
+   <div class="sidebar">
+    <div class="logo"></div>
+    <ul class="menu">
+        <li class="active">
+           <a href="dashboard.html" >
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+           </a> 
+        </li>
+
+        <li>
+            <a href="#">
+             <i class="fas fa-user"></i>
+             <span>Profile</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="/admin/movies-upload">
+             <i class="fas fa-chart-bar"></i>
+             <span>Movie Upload</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-briefcase"></i>
+             <span>All Movies</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-star"></i>
+             <span>Testimonials</span>
+            </a> 
+         </li>
+
+         <li>
+            <a href="#">
+             <i class="fas fa-cog"></i>
+             <span>Settings</span>
+            </a> 
+         </li>
+
+         <li class="logout">
+            <a href="/admin/logout">
+             <i class="fas fa-sign-out-alt"></i>
+             <span>Logout</span>
+            </a> 
+         </li>
+    </ul>
+   </div>
+
+   <div class="main--content">
+    <div class="header--wrapper">
+        <div class="header--titie">
+            <span>Admin</span>
+            <h2>Dashboard</h2>
+        </div>
+        <div class="user--info">
+          <div class="search--box"> 
+        <i class="fa-solid fa-search"></i>
+        <input type="text" placeholder="search"> 
+          </div> 
+          <% if(user) {%>
+            <img src="/uploads/<%= user.imag %>" alt=""> 
+          <% } else {%>
+            <img src="/images/man.png" alt=""> 
+          <% } %>  
+          
+        </div>
+    </div>
+
+    <form id="movie-form">
+      <label for="title">Movie Title:</label>
+      <input type="text" id="title" name="title" required>
+    
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+    
+      <label for="genre">Genre:</label>
+      <input type="text" id="genre" name="genre" required>
+    
+      <label for="movie-type">Movie Type:</label>
+      <select id="movie-type" name="type" required>
+        <option value="">Select Movie Type</option>
+        <option value="cartoon">Cartoon</option>
+        <option value="series">Series</option>
+        <option value="movie">Movie</option>
+      </select>
+    
+      <label for="quality">Movie Quality:</label>
+      <input type="text" id="quality" name="quality" required>
+    
+      <label for="quality">Release Year</label>
+      <input type="text" id="year" name="year" required>
+    
+      <label for="language">Language:</label>
+      <input type="text" id="language" name="language" required>
+    
+      <label for="movie-file">Upload Movie File:</label>
+      <input type="file" id="movie-file" name="newMovie" accept="video/*">
+    
+      <label for="image">Upload Image:</label>
+      <input type="file" id="image" name="image" accept="image/*">
+    
+      <button type="submit">Submit</button>
+    </form>
+    
+   </div>
+
+
+   
+
+   <script>
+    document.getElementById('movie-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+  
+      const formData = new FormData(this);
+  
+      try {
+        const response = await fetch('/admin/movies-upload', {
+          method: 'POST',
+          body: formData
+        });
+  
+        if (response.ok) {
+          console.log('Movie details saved successfully');
+          // Reset form
+          this.reset();
+        } else {
+          console.error('Failed to save movie details:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Failed to save movie details:', error);
+      }
+    });
+  </script>
+</body>
+</html>

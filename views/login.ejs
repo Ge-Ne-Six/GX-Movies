@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/project.css">
+</head>
+<body>
+   <div class="login-bg"></div>
+  <div class="header">
+    <div class="title">GeNeSix</div>
+    <!-- <button>Sign in</button> -->
+  </div>
+  <form>
+    <div class="login">Sign in</div>
+    <p class="input-wrapper">
+    <p>
+      <input type="text" name="email" id="" placeholder="Email or Phone number" class="input">
+      <img src="/images/user.png" class="userImage" alt="">
+      <div class="error email"></div> 
+    </p>
+    <p>
+      <input type="password" name="password" id="" placeholder="Password" class="input pass">
+      <img src="/images/visible (1).png" class="passImage" onclick="iconChange()" alt="">
+      <div class="error pass"></div>
+    </p>
+    <p><button>Sign in</button></p>
+    <div class="remember"><span class="remember-me"><input type="checkbox" name="" id="">Remember me</span> <span class="need-help"><a href="#">Need help?</a></span></div>
+    <p class="new-to">New to GeNeSix? <a href="/signup">Sign up now.</a></p>
+    </p>  
+  </form>
+  <footer></footer>
+
+  <script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.error.email');
+    const passError = document.querySelector('.error.pass');
+    // const phoneError = document.querySelector('.error.phone');
+
+    let passImage = document.querySelector('.passImage');
+    let pass = document.querySelector('.pass');
+
+    function iconChange() {
+
+      if(pass.type == "password"){
+        passImage.src = '/images/eye.png'
+        pass.type = 'text'
+      }
+      else{
+        passImage.src = '/images/visible (1).png'
+        pass.type = 'password';
+      }
+    }
+
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+          emailError.textContent = '';
+          passError.textContent = '';
+          // phoneError.textContent = '';
+
+      const email = form.email.value;
+      const password = form.password.value;
+      // const phonenumber = form.phonenumber.value;
+
+     
+
+      // console.log(form);
+      try{
+        const res = await fetch('/login',{
+          method: 'POST',
+          body: JSON.stringify({email, password}),
+          headers: {'Content-Type':'application/json'}
+        });
+        const data = await res.json();
+        console.log(data);
+        if(data.errors) {
+          emailError.textContent = `${data.errors.email}`;
+          passError.textContent = `${data.errors.password}`;
+          // phoneError.textContent = `*${data.errors.phonenumber}`;
+        }
+
+        if(data.user){
+        location.assign('/genesix');
+      }
+      }
+      catch(err){
+        console.log(err);
+      }
+
+      
+    })
+  </script>
+</body>
+</html>
