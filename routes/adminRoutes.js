@@ -40,7 +40,7 @@ router.get('/', adminAuth, async (req, res)=>{
 
   }
   catch(err){
-    console.log(err.message);
+    console.log(err.message); 
   }
   
 });
