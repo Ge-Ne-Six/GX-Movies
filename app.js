@@ -37,7 +37,7 @@ mongoose.connect(myDB)
   app.use(morgan('dev')); 
 
   app.get('/', (req,res) => {
-    res.redirect('/genesix'); 
+    res.json('Hello') 
   }); 
 
   app.use('/genesix',otherRoutes); 
