@@ -132,13 +132,7 @@
           <span><i class="fas fa-server"></i> Server 1</span>
           <span><%= movie.language %></span>
           <span>480p</span>
-          <a href="../public/Movies/<%= movie.filePath %>" download>Download</a>
-        </div>
-        <div class="download-box">
-          <span><i class="fas fa-server"></i> Server 2</span>
-          <span>English</span>
-          <span>720p</span>
-          <a href="../public/Movies/<%= movie.filePath %>" download>Download</a>
+          <a href="/Movies/<%= movie.filePath %>" download>Download</a>
         </div>
       </div>
     </section>
