@@ -4,19 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="shortcut icon" href="/images/letter-g (1).png"/>
   <link rel="stylesheet" href="/project.css">
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
    <div class="login-bg"></div>
   <div class="header">
-    <div class="title">GeNeSix</div>
+    <a href="/genesix" class="logo">
+      Gx-Movies<span >.hd</span>
+  </a>
     <!-- <button>Sign in</button> -->
   </div>
   <form>
     <div class="login">Sign in</div>
     <p class="input-wrapper">
     <p>
-      <input type="text" name="email" id="" placeholder="Email or Phone number" class="input">
+      <input type="text" name="email" id="" placeholder="Email" class="input email">
       <img src="/images/user.png" class="userImage" alt="">
       <div class="error email"></div> 
     </p>
@@ -26,7 +30,7 @@
       <div class="error pass"></div>
     </p>
     <p><button>Sign in</button></p>
-    <div class="remember"><span class="remember-me"><input type="checkbox" name="" id="">Remember me</span> <span class="need-help"><a href="#">Need help?</a></span></div>
+    <div class="remember"><span class="remember-me" style="color: #000;"><input type="checkbox" name="" id="">Remember me</span> <span class="need-help"><a href="javascript:void" onclick="passReset()">fogotten password?</a></span></div>
     <p class="new-to">New to GeNeSix? <a href="/signup">Sign up now.</a></p>
     </p>  
   </form>
@@ -92,6 +96,31 @@
 
       
     })
+
+
+    function passReset(){
+      let email = document.querySelector('.input.email').value;
+      const regex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,4}$/;
+      if(email === ''){
+        emailError.innerHTML = '*Enter your email to reset password!';
+      }
+      else if(!regex.test(email)){
+        emailError.innerHTML = '*Enter a valid email!';
+      }
+      else{
+        fetch('/recoverPassword',{
+          method: 'POST',
+          body: JSON.stringify({email}),
+          headers: {'Content-Type':'application/json'}
+        })
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err =>{
+          console.log(err.message);
+        })
+      }
+    }
   </script>
 </body>
 </html>

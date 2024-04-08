@@ -1,6 +1,6 @@
 body{
-  background-image: url('images/pic1.jpg');
-  /* background-color: black; */
+  /* background-image: url('images/pic1.jpg'); */
+  background-color: #080808;
 } 
 
 .title{
@@ -28,6 +28,7 @@ form{
   position: relative;
   top: 30px;
   z-index: 50;
+  background-color: #ffffff71;
 }
 .login{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,12 +36,13 @@ form{
   font-weight: 700;
   position: relative;
   right: 80px;
-  background: linear-gradient(
+  color: #e70634;
+  /* background: linear-gradient(
     135deg,#ff00d2,#fed90f,#00a2ff,
     #09f1b8,#ff00d2,#fed90f,#00a2ff,
     #09f1b8);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;  
+  -webkit-text-fill-color: transparent;   */
 }
 .admin-log{
   margin-left: 150px;
@@ -291,4 +293,23 @@ form{
   bottom: 305px;
   right: 86px;
   cursor: pointer;
+}
+
+.logo{
+  color: #e70634;
+  text-transform: uppercase;
+  font-size: 3rem;
+  font-weight: 400;
+  margin: 0px auto 0px 40px;
+  display: flex;
+  align-items: center;
+  font-family: Monoton;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.logo span{
+  font-size: 0.5rem;
+  margin-left: 5px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }

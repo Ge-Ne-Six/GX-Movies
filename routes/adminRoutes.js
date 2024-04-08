@@ -120,8 +120,9 @@ router.post('/login', async (req, res)=>{
       res.cookie('GenesixAdmin', adminT, {httpOnly: true, maxAge: maxAge * 1000});
       res.status(400).json({ admin: admin._id})
     }else{
-      console.log('u are not an admin fuck off');
-      res.json({adminError: 'u are not an admin so piss off'})
+
+      res.json({adminError: 'u are not an admin so piss off'});
+
     }
 
     // res.cookie('sign', token, {httpOnly: true, maxAge: maxAge * 1000});
