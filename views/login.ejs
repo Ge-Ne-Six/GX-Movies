@@ -7,6 +7,40 @@
   <link rel="shortcut icon" href="/images/letter-g (1).png"/>
   <link rel="stylesheet" href="/project.css">
   <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <style>
+   .header .message-wrapper{
+      color: #fff;
+      position: absolute;
+      right: 50px;
+      width: 150px;
+      padding: 10px;
+      display: none;
+    }
+    .header .message-wrapper .message{
+      width: 100%;
+      background-color: hwb(240 58% 15%);
+      padding: 10px;
+      padding-right: 30px;
+      position: relative;
+      border: 1px solid #fff;
+    }
+    .header .message-wrapper .img{
+      background-color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 20px;
+      right: -28px;
+      cursor: pointer;
+    }
+    .header .message-wrapper .img:hover{
+      background-color: #ffffff85;
+    }
+  </style>
 </head>
 <body>
    <div class="login-bg"></div>
@@ -15,6 +49,10 @@
       Gx-Movies<span >.hd</span>
   </a>
     <!-- <button>Sign in</button> -->
+    <div class="message-wrapper">
+      <div class="message">You Need to logout to able to change your password</div>
+      <div class="img"><img src="/images/close_FILL0_wght400_GRAD0_opsz24 (1).png" alt=""></div>
+    </div>
   </div>
   <form>
     <div class="login">Sign in</div>
@@ -30,13 +68,14 @@
       <div class="error pass"></div>
     </p>
     <p><button>Sign in</button></p>
-    <div class="remember"><span class="remember-me" style="color: #000;"><input type="checkbox" name="" id="">Remember me</span> <span class="need-help"><a href="javascript:void" onclick="passReset()">fogotten password?</a></span></div>
+    <div class="remember"><span class="remember-me" style="color: #000;"><input type="checkbox" name="" id="">Remember me</span> <span class="need-help"><a href="javascript:void" class="forgotten-pass">fogotten password?</a></span></div>
     <p class="new-to">New to GeNeSix? <a href="/signup">Sign up now.</a></p>
     </p>  
   </form>
   <footer></footer>
 
   <script>
+    let forgottenPass = document.querySelector('.forgotten-pass');
     const form = document.querySelector('form');
     const emailError = document.querySelector('.error.email');
     const passError = document.querySelector('.error.pass');
@@ -97,8 +136,8 @@
       
     })
 
+    forgottenPass.addEventListener('click', async function(e){
 
-    function passReset(){
       let email = document.querySelector('.input.email').value;
       const regex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,4}$/;
       if(email === ''){
@@ -108,19 +147,55 @@
         emailError.innerHTML = '*Enter a valid email!';
       }
       else{
-        fetch('/recoverPassword',{
-          method: 'POST',
-          body: JSON.stringify({email}),
-          headers: {'Content-Type':'application/json'}
-        })
-        .then(result => {
-          console.log(result);
-        })
-        .catch(err =>{
+        // fetch('/recoverPassword',{
+        //   method: 'POST',
+        //   body: JSON.stringify({email}),
+        //   headers: {'Content-Type':'application/json'}
+        // })
+        // .then(result => {
+        //   console.log(result);
+        // })
+        // .catch(err =>{
+        //   console.log(err.message);
+        // });
+
+
+        try{
+
+              let res = await fetch('/recoverPassword',{
+              method: 'POST',
+              body: JSON.stringify({email}),
+              headers: {'Content-Type':'application/json'}
+            })
+
+            let message = await res.json();
+
+            if(message.otp){
+              
+              document.querySelector('.message-wrapper').style.display = 'block';
+              document.querySelector('.message').innerHTML = 'otp has been sent to your Email';
+
+              function redirect(){
+                location.assign('/recoverPassword');
+              }
+
+              setTimeout(redirect, 5000);
+
+            }else{
+              console.log(message);
+            }
+
+        }
+        catch(err){
           console.log(err.message);
-        })
+        }
+        
+
       }
-    }
+
+    })
+
+    
   </script>
 </body>
 </html>

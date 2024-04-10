@@ -17,7 +17,7 @@ const userSchema = new Schema({
   password:{
     type: String,
      required: [true,'Please enter your password'],
-     validate: [isStrongPassword,'Please enter a valid password!']
+     validate: [isStrongPassword,'Password must contain Alphanumeric characters and a symbol!']
   },
   phonenumber:{
     type: String, 

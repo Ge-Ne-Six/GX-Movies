@@ -41,7 +41,7 @@ const checkUser =  (req, res, next) =>{
         let name =  res.locals.user = user;
 
         req.user = decodedtoken.id 
-        console.log(name);
+        // console.log(name);
        }else{
         res.redirect('/logout');
        }
@@ -56,6 +56,33 @@ const checkUser =  (req, res, next) =>{
     next();
   }
 };
+
+
+/*------------------forgotten-password-auth-----------*/ 
+// const forgottenPass = (req, res, next) =>{
+  
+//   const token = req.cookies.sign;
+
+//   if(token){
+//     jwt.verify( token,'Is Obi a boy?', (err, decodedtoken) =>{
+//       if(err){
+//         next()
+//       }
+//       else{
+//         res.locals.message = 'This User is already logged in';
+//         res.json({
+//           logMessage: 'This User is already logged in',
+//         })
+//         console.log('This User is already logged in')
+//         res.redirect('/login') 
+//       }
+//     })
+//   }
+//   else{
+//     next()
+//   }
+// };
+
 
 /*---------------------ERROR-HANDLER---------------------*/
 

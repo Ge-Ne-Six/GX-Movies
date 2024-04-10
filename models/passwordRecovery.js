@@ -6,7 +6,7 @@ const newPassword = new Schema({
   email:{
     type: String
   },
-  filePath:{
+  otp:{
     type: String
   },
   createdAt:{
