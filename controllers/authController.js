@@ -17,14 +17,14 @@ async function main(otp,email){
     port: 465, 
     secure: true, 
     auth: {
-      user: 'nnamdiamaga2k20@gmail.com',
-      pass: 'Amaga080363281982003'
+      user: 'the.sixers.com@gmail.com',
+      pass: 'xuzy urzr lxki yigm'
     }
   });
 
   const info = await transporter.sendMail({
-    from: 'GX-movies <nnamdiamaga2k20@gmail.com>',
-    to: 'the.sixers.com@gmail.com',
+    from: 'GX-movies <the.sixers.com@gmail.com>',
+    to: 'nnamdiamaga2k20@gmail.com',
     subject: 'Your Otp',
     html: `
       <h2> otp code </h2>
