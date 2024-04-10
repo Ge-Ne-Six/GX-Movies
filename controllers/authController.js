@@ -29,7 +29,7 @@ async function main(otp,email){
     html: `
     <div class="wrapper" style="width: 100%; text-align: center;">
     <h2>Password Recovery OTP code </h2>
-      <h1 style="color: red; letter-spacing: 10px;"> 1111111 </h1>
+      <h1 style="color: red; letter-spacing: 10px;"> ${otp} </h1>
   </div>
     `
   })
