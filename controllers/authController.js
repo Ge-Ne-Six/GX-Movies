@@ -24,11 +24,13 @@ async function main(otp,email){
 
   const info = await transporter.sendMail({
     from: 'GX-movies <the.sixers.com@gmail.com>',
-    to: 'nnamdiamaga2k20@gmail.com',
+    to: email,
     subject: 'Your Otp',
     html: `
-      <h2> otp code </h2>
-      <h1> ${otp} </h1>
+    <div class="wrapper" style="width: 100%; text-align: center;">
+    <h2>Password Recovery OTP code </h2>
+      <h1 style="color: red; letter-spacing: 10px;"> 1111111 </h1>
+  </div>
     `
   })
 
