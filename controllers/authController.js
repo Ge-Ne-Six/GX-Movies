@@ -38,11 +38,21 @@ async function main(otp,email){
 
 }
 
+function generateOTP() {
+  const min = 100000; // Minimum 6-digit number (inclusive)
+  const max = 999999; // Maximum 6-digit number (inclusive)
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 
 function passResetToken(otp){
 return jwt.sign({otp}, 'pablos doings', {expiresIn: maxAge})
 }
+
+function gxAuth(user_id){
+  return jwt.sign({user_id}, 'iam a baller', {expiresIn: maxAge})
+  }
 
 module.exports.signup_get = (req,res) => {
   res.status(200).render('signup');
@@ -92,23 +102,31 @@ module.exports.signup_post = async (req,res) => {
 
 module.exports.passRecovery_post = async (req,res) => {
   const {email} = req.body;
-  let otp = '123456';
+  let otp = generateOTP().toString();
 
   try{
-    let user = await User.find({email});
+    let user = await User.findOne({email});
+    let user_id = user.id;
+    
     if(user){
       let resetModel = await passReset.create({email, otp});
       console.log(resetModel);
       let token =  passResetToken(resetModel._id);
+      let authToken = gxAuth(user_id);
 
       if(resetModel){
         if(token){
           main(otp,email)
+          .then(result => {
+            res.cookie('Gxauth', authToken, {httpOnly: true, maxAge: maxAge * 1000});
+            res.cookie('GenesixOtp', token, {httpOnly: true, maxAge: otpmaxAge * 1000});
+            res.status(200).json({otp: 'otp has been sent to Your email'});
+          })
           .catch(err => {
             console.log(err.message)
           });
-          res.cookie('GenesixOtp', token, {httpOnly: true, maxAge: otpmaxAge * 1000});
-          res.status(200).json({otp: 'otp created'});
+          
+          
         }
       }
     } else{
@@ -191,7 +209,7 @@ module.exports.newPassword_post = async (req,res) => {
                 if(updatePass){
                   await passReset.findByIdAndDelete({_id})
                   res.cookie('GenesixOtp', '', { maxAge: 1 });
-                  res.json({message: 'Password Succesfully Changed'})
+                  res.json({message: 'Password Succesfully Changed'});
               }
 
             }
@@ -203,10 +221,12 @@ module.exports.newPassword_post = async (req,res) => {
 
           }else{
             console.log('user not found')
+            res.json({err: 'user not found'})
           }
 
         }else{
-          console.log('otp not found')
+          console.log('otp not valid')
+          res.json({err: 'otp is not valid'});
         }
       }
 
@@ -215,6 +235,53 @@ module.exports.newPassword_post = async (req,res) => {
 
 
 }
+
+module.exports.resendOtp_post = async (req,res) => {
+  const token = req.cookies.Gxauth;
+  let otp = generateOTP().toString();
+
+  if(token){
+    jwt.verify(token, 'pablos doings', async (err, authToken) => {
+
+      if(err){
+        console.log(err);
+        res.json({err: err.message})
+      }
+      else{
+
+        try{
+          let id = authToken.user_id;
+          let user = await User.findById({id})
+          if(user){
+            let email = user.email;
+
+            main(otp,email)
+            .then(result => {
+
+              res.json({message: 'otp has been sent to your Email'});
+
+            })
+            .catch(err =>{
+              console.log(err.message)
+            })
+
+          }
+        }
+        catch(err){
+          // const errors = handleError(err);
+          res.status(400).json({err: err.message}); 
+        }
+
+      }
+
+    })
+  } 
+  else{
+    res.json({err: 'otp has expired request for another'});
+  }
+
+  
+};
 
 module.exports.logout_get = (req, res) =>{
  res.cookie('sign', '' , { maxAge: 1 });

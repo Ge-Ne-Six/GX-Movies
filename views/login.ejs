@@ -7,40 +7,6 @@
   <link rel="shortcut icon" href="/images/letter-g (1).png"/>
   <link rel="stylesheet" href="/project.css">
   <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <style>
-   .header .message-wrapper{
-      color: #fff;
-      position: absolute;
-      right: 50px;
-      width: 150px;
-      padding: 10px;
-      display: none;
-    }
-    .header .message-wrapper .message{
-      width: 100%;
-      background-color: hwb(240 58% 15%);
-      padding: 10px;
-      padding-right: 30px;
-      position: relative;
-      border: 1px solid #fff;
-    }
-    .header .message-wrapper .img{
-      background-color: #fff;
-      width: 30px;
-      height: 30px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      top: 20px;
-      right: -28px;
-      cursor: pointer;
-    }
-    .header .message-wrapper .img:hover{
-      background-color: #ffffff85;
-    }
-  </style>
 </head>
 <body>
    <div class="login-bg"></div>
@@ -50,8 +16,8 @@
   </a>
     <!-- <button>Sign in</button> -->
     <div class="message-wrapper">
-      <div class="message">You Need to logout to able to change your password</div>
-      <div class="img"><img src="/images/close_FILL0_wght400_GRAD0_opsz24 (1).png" alt=""></div>
+      <div class="message"></div>
+      <div class="img"></div>
     </div>
   </div>
   <form>
@@ -138,6 +104,9 @@
 
     forgottenPass.addEventListener('click', async function(e){
 
+      document.querySelector('.message-wrapper').style.display = 'block';
+      document.querySelector('.message').innerHTML = 'Loading....';
+
       let email = document.querySelector('.input.email').value;
       const regex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,4}$/;
       if(email === ''){
@@ -171,18 +140,16 @@
             let message = await res.json();
 
             if(message.otp){
-              
-              document.querySelector('.message-wrapper').style.display = 'block';
-              document.querySelector('.message').innerHTML = 'otp has been sent to your Email';
+              document.querySelector('.message').innerHTML = message.otp;
 
               function redirect(){
                 location.assign('/recoverPassword');
               }
 
+              
+
               setTimeout(redirect, 5000);
 
-            }else{
-              console.log(message);
             }
 
         }

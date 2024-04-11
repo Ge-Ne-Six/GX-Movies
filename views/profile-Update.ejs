@@ -8,6 +8,9 @@
   <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+      body{
+        background-color: #080808 !important;
+      }
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -82,23 +85,12 @@
     </style>
 </head>
 <body>
-  <%- include('./partials/svg.ejs') %>
+  
   <main class="d-flex flex-nowrap">
-    <%- include('./partials/sidebar.ejs') %>
 
     <!-- -->
     <div class="profile">
       <div class="img-input-label">
-        <a href="/pic-upload">
-          <% if (user) { %>
-            <% if (user.imag) {%>
-              <img src="/uploads/<%= user.imag %>" class="profile-img">
-         <% } else {%>
-            <img src="/uploads/profile-user.png" alt="" class="profile-img">
-         <% } %> 
-        <% } %> 
-        </a>
-      </div>
       <form class="form-update">
         <div class="first">
           <label for="">

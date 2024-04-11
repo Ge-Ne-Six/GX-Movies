@@ -317,3 +317,68 @@ form{
 .error{
 
 }
+
+.resend-p{
+  width: 100%;
+  text-align: center;
+}
+
+.header .message-wrapper{
+  color: #fff;
+  position: absolute;
+  right: 50px;
+  width: 150px;
+  padding: 10px;
+  display: none;
+}
+.header .message-wrapper .message{
+  width: 100%;
+  background-color: hwb(240 58% 15%);
+  padding: 10px;
+  padding-right: 30px;
+  position: relative;
+  border: 1px solid #fff;
+}
+.header .message-wrapper .img{
+  background-color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  right: -28px;
+  cursor: pointer;
+}
+.header .message-wrapper .img:hover{
+  background-color: #ffffff85;
+}
+
+.resend-otp{
+  padding: 10px;
+  width: 250px;
+  background-color: #ffff;
+  color: red;
+  border: none;
+  border-radius: 5px;
+  z-index: 1200;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.resend-otp:hover{
+  background-color: #ffffffc3;
+  border: 1px solid red;
+}
+
+@media(max-width:530px) {
+  .logo{
+    font-size: 2rem;
+  }
+
+  form{
+    width: 350px;
+  }
+}

@@ -1143,6 +1143,22 @@ footer .logo{
   .movie-banner{
     padding: 20px;
   }
+  .details-cover {
+    width: 480px;
+  }
+  .details-cover .account-details div span{
+    font-size: 15px;
+    /* margin-left: 80px; */
+  }
+  .details-cover .account-details div{
+    font-size: 13px;
+  }
+  .details-cover .account-details .email{
+    font-size: 11px;
+  }
+  .details-cover .account-details .edit-profile{
+    margin-left: -30px;
+  }
   .download-box{
     grid-template-columns: 1fr;
     margin-bottom: 20px;

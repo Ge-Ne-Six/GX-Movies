@@ -12,6 +12,7 @@ router.get('/recoverPassword', authController.passRecovery_get);
 router.get('/newpassword', authController.newPassword_get);
 router.post('/newpassword',  authController.newPassword_post);
 router.post('/confirm-otp', authController.confirmOtp_post);
+router.post('/resendotp', authController.resendOtp_post)
 router.post('/login', authController.login_post);
 router.post('/recoverPassword', authController.passRecovery_post);
 router.get('/logout', authController.logout_get);
