@@ -103,7 +103,7 @@ const handleError = (err) => {
     errors.password = 'incorrect password';
   }
   if(err.message === 'this email is registered'){
-    errors.message === 'this email is registered';
+    errors.email === 'this email is registered';
   }
 
   if (err.code === 11000) {
