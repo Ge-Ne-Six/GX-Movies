@@ -51,7 +51,7 @@ return jwt.sign({otp}, 'pablos doings', {expiresIn: maxAge})
 }
 
 function gxAuth(user_id){
-  return jwt.sign({user_id}, 'iam a baller', {expiresIn: maxAge})
+  return jwt.sign({user_id}, 'i am a baller', {expiresIn: maxAge})
   }
 
 module.exports.signup_get = (req,res) => {
@@ -241,7 +241,7 @@ module.exports.resendOtp_post = async (req,res) => {
   let otp = generateOTP().toString();
 
   if(token){
-    jwt.verify(token, 'pablos doings', async (err, authToken) => {
+    jwt.verify(token, 'i am a baller', async (err, authToken) => {
 
       if(err){
         console.log(err);
@@ -263,6 +263,7 @@ module.exports.resendOtp_post = async (req,res) => {
             })
             .catch(err =>{
               console.log(err.message)
+              res.json({err})
             })
 
           }
@@ -277,7 +278,7 @@ module.exports.resendOtp_post = async (req,res) => {
     })
   } 
   else{
-    res.json({err: 'otp has expired request for another'});
+    res.json({err: 'Token error start the process again'});
   }
 
   
