@@ -1,164 +1,104 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="/project.css">
-  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pic Upload</title>
+  <link rel="stylesheet" href="/style.css">
+    <%- include('partials/head.ejs') %> 
     <style>
-      body{
-        background-color: #080808 !important;
+      form input{
+        width: 200px;
+        padding: 5px 10px;
       }
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+      form .put{
+        margin-top: 10px;
       }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-      .bd-mode-toggle {
-        z-index: 1500;
+      form button{
+        margin-top: 10px;
+        width: 200px;
+        padding: 5px 10px;
+        border: none;
+        color: #fff;
+        background-color: crimson;
       }
     </style>
 </head>
 <body>
-  
-  <main class="d-flex flex-nowrap">
-
-    <!-- -->
-    <div class="profile">
-      <div class="img-input-label">
-      <form class="form-update">
-        <div class="first">
-          <label for="">
-            First Name:
-          </label>
-          <input type="text" name="firstname">
-        </div>
-        <div class="first">
-          <label for="">
-            Last Name:
-          </label>
-          <input type="text" name="lastname">
-        </div>
-        <div class="first">
-          <label for="" class="middle-name">
-            Middle Name:
-          </label>
-          <input type="text" name="middlename" class="input-m-move">
-        </div>
-        <div class="first">
-          <label for="">
-            D.O.B:
-          </label>
-          <input type="date" name="dob" class="input-dob-move">
-        </div>
-        <button>Save</button>
-      </form>
+    
+    <!--Scroll-progress-bar=======================-->
+    <div id="progress">
+        <span id="progress-value"></span>
     </div>
-  
-  </main>
+    
+    <%- include('./partials/nav.ejs') %>
+
+      <div class="hero">
+        <form action="">
+          <div class="put">
+            <input type="text" name="firstname" placeholder="first name">
+          </div>
+          <div class="put">
+            <input type="text" name="lastname" placeholder="last name">
+          </div>
+          <div class="put">
+            <input type="text" name="middlename" placeholder="middle name">
+          </div>
+          <div class="put">
+            <input type="date" name="dob" placeholder="dob">
+          </div>
+          <div class="put">
+            <select name="Gender" id="">
+              <option value="">GENDER</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+            </select>
+          </div>
+          <button>Submit</button>
+        </form>
+      </div>
 
 
-  <footer></footer>
+     <!--footer======================-->
 
-  <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+     <%- include('partials/footer') %>
 
-  <script src="/sidebars.js"></script>
+     <script src="/Swiper Files/swiper-bundle.min.js"></script>
+
+     <script src="/js/jquery.js"></script>
+
+     <script src="/js/home.js"></script>
+
   <script>
+
     let form = document.querySelector('form');
 
-    form.addEventListener('submit', async (e) =>{
+    form.addEventListener('submit', async function(e){
       e.preventDefault();
+
+      let firstname = form.firstname.value;
+      let lastname = form.lastname.value;
+      let middlename = form.middlename.value;
+      let dob = form.dob.value;
+
+      let res = await fetch('/profile-Update', {
+        method: 'POST',
+        body: JSON.stringify({firstname, lastname, middlename, dob}),
+        headers: {'Content-Type': 'application/json'}
+      })
+
+      let message = await res.json();
+
       
-      let firstname = form.firstname.value; 
-      let lastname = form.lastname.value; 
-      let middlename = form.middlename.value; 
-      let dob = form.dob.value; 
 
 
-      try{
-        let res = await fetch('/profile-Update',{
-          method: 'POST',
-          body: JSON.stringify({firstname, lastname, middlename, dob}),
-          headers:{'Content-Type': 'application/json'}
-        })
 
-        const data = await res.json();
-
-        if(data.user){
-        location.assign('/genesix');
-      }
-      }
-      catch(err){
-        console.log(err);
-      }
     })
+
   </script>
 
 
+  </script>
 </body>
 </html>
