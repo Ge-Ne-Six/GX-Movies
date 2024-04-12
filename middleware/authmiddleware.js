@@ -102,6 +102,9 @@ const handleError = (err) => {
   if(err.message === 'incorrect password'){
     errors.password = 'incorrect password';
   }
+  if(err.message === 'this email is registered'){
+    errors.message === 'this email is registered';
+  }
 
   if (err.code === 11000) {
     if(err.message.includes('email_1 dup key')){
