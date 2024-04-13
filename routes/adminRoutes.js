@@ -6,6 +6,8 @@ const cookie = require('cookie-parser');
 const { handleError, adminAuth, adminToken, checkAdmin } = require('../middleware/authmiddleware');
 const Movie  = require('../models/movies');
 const multer = require('multer');
+const { google } = require('googleapis');
+const apikeys = require('../gx-movies-90190fb06ae7.json')
 
 const router = express.Router();
 
@@ -23,6 +25,53 @@ const movieStorage = multer.diskStorage({
 
 //initialize upload variable
 const upload = multer({ storage: movieStorage });
+
+
+const SCOPE = ['https://www.googleapis.com/auth/drive']
+
+// async function authorize(){
+//   const jwtClient = new google.auth.JWT(
+//     apikeys.client_email,
+//     null,
+//     apikeys.private_key,
+//     SCOPE
+//   );
+
+
+//   await jwtClient.authorize();
+
+//   return jwtClient;
+// }
+
+// Function to upload file to Google Drive
+async function uploadToDrive(name, name2) {
+  // Load client secrets from a local file
+  const auth = new google.auth.JWT(
+    apikeys.client_email,
+    null,
+    apikeys.private_key,
+    SCOPE
+  );
+
+  const drive = google.drive({ version: 'v3', auth });
+
+  const fileMetadata = {
+    name: file.originalname,
+  };
+
+  const media = {
+    mimeType: file.mimetype,
+    body: file.buffer,
+  };
+
+  const response = await drive.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: 'id',
+  });
+
+  return response.data.id;
+}
 
 const maxAge = 1 * 24 * 60 * 60;
 
@@ -140,6 +189,8 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie'}, { name: 'image
 
   const title = req.body.title;
 
+  uploadToDrive([{ name: 'newMovie'}, { name: 'image' }])
+
   const newMovie = new Movie({
     title: req.body.title,
     image: req.files['image'][0].originalname,
@@ -151,6 +202,7 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie'}, { name: 'image
     type: req.body.type, 
     filePath: req.files['newMovie'][0].originalname 
 });
+
 
 try {
    const checkMovie = await Movie.findOne({title});
