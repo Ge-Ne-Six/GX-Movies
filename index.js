@@ -15,8 +15,8 @@ const { error } = require('console');
 
 const app = express();
 
-// const myDB = 'mongodb://127.0.0.1:27017/genesix'; 
-const myDB = 'mongodb+srv://GX-movie-admin:Amaga2003@genesix.yplxhqc.mongodb.net/';
+const myDB = 'mongodb://127.0.0.1:27017/genesix'; 
+// const myDB = 'mongodb+srv://GX-movie-admin:Amaga2003@genesix.yplxhqc.mongodb.net/';
 
 mongoose.connect(myDB)
   .then((result) => {app.listen(2003); console.log('Connected!')})
