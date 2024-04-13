@@ -187,8 +187,6 @@ router.post('/login', async (req, res)=>{
 
 router.post('/movies-upload', upload.fields([{ name: 'newMovie'}, { name: 'image' }]), async (req, res)=>{
 
-  const title = req.body.title;
-
   uploadToDrive([{ name: 'newMovie'}, { name: 'image' }])
 
   const newMovie = new Movie({

@@ -6,21 +6,6 @@ const multer = require('multer');
 const path = require('path');
 
 
-//imageStorage
-const storage = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function(req, file, cb){
-    const fileName = `${file.originalname}`;
-    cb(null, fileName);
-  }
-});
-
-//initialize upload variable
-const uploads = multer({ 
-  storage: storage 
-})
-
-
 
 module.exports.home_get = (req, res) =>{
 
@@ -124,12 +109,8 @@ module.exports.profileUpdate_post = async (req, res) =>{
 
 }
 
-module.exports.picUpload_post = uploads.single('profileImage'), (req, res) =>{
-
-  const imag = req.file.originalname;
-
- 
-
+module.exports.picUpload_post =  (req, res) =>{
+  let token = req.cookies.sign;
       if(token){ 
         jwt.verify( token,'Is Obi a boy?',async (err, decodedtoken) =>{
           if(err){
@@ -141,7 +122,7 @@ module.exports.picUpload_post = uploads.single('profileImage'), (req, res) =>{
             let user = await User.findById(decodedtoken.id);
     
             try{       
-               let met = await user.updateOne({ imag });
+               let met = await user.updateOne({ imag: req.file.originalname });
               // res.json({user});
               res.redirect('/genesix')
             }
@@ -152,5 +133,39 @@ module.exports.picUpload_post = uploads.single('profileImage'), (req, res) =>{
           }
     
         })
+      }else{
+        res.json({
+          message: 'Login Token is no longer valid!'
+        })
       }
+}
+
+module.exports.movieSearch_post = async (req,res) =>{
+  let nameUp = req.body;
+  let all = [];
+  
+  let name = nameUp.nameUp;
+
+
+  try{
+    let result = await Movie.find();
+
+  
+    
+    for(i = 0; i < result.length; i++){
+      let single = result[i];
+
+      if(single.title.toUpperCase().includes(name) && name !== ''){
+        all.push(single);
+        
+      }
+
     }
+
+    res.json({all});
+
+  }
+  catch(err){
+    console.log(err.message)
+  }
+}
