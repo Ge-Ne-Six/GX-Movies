@@ -10,14 +10,15 @@ const path = require('path');
 const storage = multer.diskStorage({
   destination: './public/uploads/',
   filename: function(req, file, cb){
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    const fileName = `${file.originalname}`;
+    cb(null, fileName);
   }
 });
 
 //initialize upload variable
 const uploads = multer({ 
   storage: storage 
-}).single('profileImage'); 
+})
 
 
 
@@ -123,33 +124,26 @@ module.exports.profileUpdate_post = async (req, res) =>{
 
 }
 
-module.exports.picUpload_post = (req, res) =>{
-  uploads(req, res, (err) => {
-    if(err){
-      console.log(err);
-      res.send(err);
-    }
-    else{
-      console.log(req.file);
-      res.redirect('/genesix');
+module.exports.picUpload_post = uploads.single('profileImage'), (req, res) =>{
 
-      const token = req.cookies.signin;
+  const imag = req.file.originalname;
+
+ 
 
       if(token){ 
         jwt.verify( token,'Is Obi a boy?',async (err, decodedtoken) =>{
           if(err){
             console.log(err.message);
-            res.redirect('/login')
-    
-            
+            res.redirect('/login')    
           }
           else{
             console.log(decodedtoken);
             let user = await User.findById(decodedtoken.id);
     
             try{       
-               let met = await user.updateOne({ imag: req.file.filename});
-              res.json({user});
+               let met = await user.updateOne({ imag });
+              // res.json({user});
+              res.redirect('/genesix')
             }
             catch(err){
               console.log(err)
@@ -160,6 +154,3 @@ module.exports.picUpload_post = (req, res) =>{
         })
       }
     }
-  })
-}
-

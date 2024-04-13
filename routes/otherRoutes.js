@@ -17,17 +17,19 @@ router.get('/movie', pageAuth, otherPage.movie_get);
 
 router.get('/animation', pageAuth, otherPage.animation_get);
 
-router.get('/series', pageAuth, otherPage.series_get);
+router.get('/series', pageAuth, otherPage.series_get); 
 
 router.get('/profile-Update', pageAuth, otherPage.profileUpdate_get);
 
 router.get('/pic-upload', pageAuth, otherPage.picUpload_get);
 
+router.post('/pic-upload', otherPage.picUpload_post);
+
 router.get('/:id', pageAuth, otherPage.id); 
 
 router.post('/profile-Update', pageAuth, otherPage.profileUpdate_post);
 
-router.post('/pic-upload', pageAuth, otherPage.picUpload_post);
+
 
 router.post('/movie-search', async (req,res) =>{
   let nameUp = req.body;
