@@ -73,7 +73,7 @@ userSchema.statics.login = async function({email, password}){
       }
         throw Error('please enter ur password');
     }
-    throw Error('this email is registered');
+    throw Error('this email is not registered');
   }
   throw Error('please enter your email');
 }

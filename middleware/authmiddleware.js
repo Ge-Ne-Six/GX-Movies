@@ -57,33 +57,6 @@ const checkUser =  (req, res, next) =>{
   }
 };
 
-
-/*------------------forgotten-password-auth-----------*/ 
-// const forgottenPass = (req, res, next) =>{
-  
-//   const token = req.cookies.sign;
-
-//   if(token){
-//     jwt.verify( token,'Is Obi a boy?', (err, decodedtoken) =>{
-//       if(err){
-//         next()
-//       }
-//       else{
-//         res.locals.message = 'This User is already logged in';
-//         res.json({
-//           logMessage: 'This User is already logged in',
-//         })
-//         console.log('This User is already logged in')
-//         res.redirect('/login') 
-//       }
-//     })
-//   }
-//   else{
-//     next()
-//   }
-// };
-
-
 /*---------------------ERROR-HANDLER---------------------*/
 
 const handleError = (err) => {
@@ -102,8 +75,8 @@ const handleError = (err) => {
   if(err.message === 'incorrect password'){
     errors.password = 'incorrect password';
   }
-  if(err.message === 'this email is registered'){
-    errors.email === 'this email is registered';
+  if(err.message === 'this email is not registered'){
+    errors.email = 'this email is not registered';
   }
 
   if (err.code === 11000) {

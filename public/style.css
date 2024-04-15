@@ -1550,6 +1550,9 @@ footer .logo{
 .searched-movies .search-wrapper{
   overflow: scroll;
 }
+.searched-movies .search-wrapper::-webkit-scrollbar{
+  display: none;
+}
 .searched-movies .search-wrapper .movie-search{
   border-bottom: 1px solid grey;
 }

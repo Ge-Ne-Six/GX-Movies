@@ -29,23 +29,8 @@ const upload = multer({ storage: movieStorage });
 
 const SCOPE = ['https://www.googleapis.com/auth/drive']
 
-// async function authorize(){
-//   const jwtClient = new google.auth.JWT(
-//     apikeys.client_email,
-//     null,
-//     apikeys.private_key,
-//     SCOPE
-//   );
 
-
-//   await jwtClient.authorize();
-
-//   return jwtClient;
-// }
-
-// Function to upload file to Google Drive
-async function uploadToDrive(name, name2) {
-  // Load client secrets from a local file
+async function uploadToDrive(movieFile, imageFile) {
   const auth = new google.auth.JWT(
     apikeys.client_email,
     null,
@@ -55,23 +40,46 @@ async function uploadToDrive(name, name2) {
 
   const drive = google.drive({ version: 'v3', auth });
 
-  const fileMetadata = {
-    name: file.originalname,
-  };
+  try {
+    const movieFileMetadata = {
+      name: movieFile.originalname,
+      parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
+    };
 
-  const media = {
-    mimeType: file.mimetype,
-    body: file.buffer,
-  };
+    const movieMedia = {
+      mimeType: movieFile.mimetype,
+      body: movieFile.buffer,
+    };
 
-  const response = await drive.files.create({
-    resource: fileMetadata,
-    media: media,
-    fields: 'id',
-  });
+    const movieResponse = await drive.files.create({
+      resource: movieFileMetadata,
+      media: movieMedia,
+      fields: 'id',
+    });
 
-  return response.data.id;
+    const imageFileMetadata = {
+      name: imageFile.originalname,
+      parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
+    };
+
+    const imageMedia = {
+      mimeType: imageFile.mimetype,
+      body: imageFile.buffer,
+    };
+
+    const imageResponse = await drive.files.create({
+      resource: imageFileMetadata,
+      media: imageMedia,
+      fields: 'id',
+    });
+
+    return { movieId: movieResponse.data.id, imageId: imageResponse.data.id };
+  } catch (error) {
+    console.error('Error uploading files to Google Drive:', error);
+    throw error;
+  }
 }
+
 
 const maxAge = 1 * 24 * 60 * 60;
 
@@ -185,42 +193,38 @@ router.post('/login', async (req, res)=>{
 });
 
 
-router.post('/movies-upload', upload.fields([{ name: 'newMovie'}, { name: 'image' }]), async (req, res)=>{
+router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'image' }]), async (req, res) => {
+  try {
+    const { newMovie, image } = req.files;
+    const { title, description, language, quality, year, genre, type } = req.body;
 
-  uploadToDrive([{ name: 'newMovie'}, { name: 'image' }])
+    const { movieId, imageId } = await uploadToDrive(newMovie[0], image[0]);
 
-  const newMovie = new Movie({
-    title: req.body.title,
-    image: req.files['image'][0].originalname,
-    description: req.body.description,
-    language: req.body.language,
-    quality: req.body.quality,
-    year: req.body.year,
-    genre: req.body.genre,
-    type: req.body.type, 
-    filePath: req.files['newMovie'][0].originalname 
+    const newMovieEntry = new Movie({
+      title,
+      image: imageId,
+      description,
+      language,
+      quality,
+      year,
+      genre,
+      type,
+      filePath: movieId
+    });
+
+    const checkMovie = await Movie.findOne({ title });
+
+    if (!checkMovie) {
+      await newMovieEntry.save();
+      res.redirect('/admin');
+    } else {
+      res.status(400).json({ message: 'This movie already exists!' });
+    }
+  } catch (error) {
+    console.error('Error saving movie and image:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-
-try {
-   const checkMovie = await Movie.findOne({title});
-
-   if(!checkMovie){
-      // Save the movie to MongoDB
-      const savedMovie = await newMovie.save();
-      res.redirect('/admin');
-   } else{
-    res.json({message:'this movie already exists!'})
-   }
-  
-} catch (error) {
-  console.error('Error saving movie:', error);
-  res.status(500).json({
-    success: false,
-    message: 'Error saving movie to MongoDB',
-    error: error.message,
-  });
-}
-}); 
 
 module.exports = router; 
