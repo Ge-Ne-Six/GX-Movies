@@ -11,12 +11,16 @@ const path = require('path');
 const User = require('./models/user');
 const  jwt = require('jsonwebtoken');
 const { error } = require('console');
+// require('dotenv').config();
+
+// console.log(process.env)
+
 
 
 const app = express();
 
-const myDB = 'mongodb://127.0.0.1:27017/genesix'; 
-// const myDB = 'mongodb+srv://GX-movie-admin:Amaga2003@genesix.yplxhqc.mongodb.net/';
+// const myDB = 'mongodb://127.0.0.1:27017/genesix';   
+const myDB = 'mongodb+srv://GX-movie-admin:Amaga2003@genesix.yplxhqc.mongodb.net/';
 
 mongoose.connect(myDB)
   .then((result) => {app.listen(2003); console.log('Connected!')})
@@ -25,7 +29,7 @@ mongoose.connect(myDB)
   app.set('view engine', 'ejs');
 
   app.use(express.static('public'));
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ extended: true })); 
   app.use(express.json());
   app.use(cookieParser());
   app.use(morgan('dev')); 
