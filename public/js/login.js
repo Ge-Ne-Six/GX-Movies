@@ -23,8 +23,9 @@ form.addEventListener('submit', async (e) => {
     const data = await res.json();
     console.log(data);
     if(data.errors) {
-      emailError.textContent = `${data.errors.email}`;
-      passError.textContent = `${data.errors.password}`;
+      // emailError.textContent = `${data.errors.email}`;
+      // passError.textContent = `${data.errors.password}`;
+      alert(data.errors)
     }
 
     if(data.user){

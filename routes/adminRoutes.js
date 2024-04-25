@@ -25,7 +25,6 @@ const movieStorage = multer.diskStorage({
 
 //initialize upload variable
 const upload = multer({ storage: movieStorage });
-``
 
 const SCOPE = ['https://www.googleapis.com/auth/drive']
 
@@ -198,7 +197,7 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'imag
     const { newMovie, image } = req.files;
     const { title, description, language, quality, year, genre, type } = req.body;
 
-    const { movieId, imageId } = await uploadToDrive(newMovie[0], image[0]);
+    const { movieId, imageId } = await uploadToDrive(newMovie, image);
 
     const newMovieEntry = new Movie({
       title,

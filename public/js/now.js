@@ -11,4 +11,7 @@ function iconChange() {
     passImage.src = '/images/visible (1).png'
     pass.type = 'password';
   }
+  
 }
+
+
