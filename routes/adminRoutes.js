@@ -26,58 +26,58 @@ const movieStorage = multer.diskStorage({
 //initialize upload variable
 const upload = multer({ storage: movieStorage });
 
-const SCOPE = ['https://www.googleapis.com/auth/drive']
+// const SCOPE = ['https://www.googleapis.com/auth/drive']
 
 
-async function uploadToDrive(movieFile, imageFile) {
-  const auth = new google.auth.JWT(
-    apikeys.client_email,
-    null,
-    apikeys.private_key,
-    SCOPE
-  );
+// async function uploadToDrive(movieFile, imageFile) {
+//   const auth = new google.auth.JWT(
+//     apikeys.client_email,
+//     null,
+//     apikeys.private_key,
+//     SCOPE
+//   );
 
-  const drive = google.drive({ version: 'v3', auth });
+//   const drive = google.drive({ version: 'v3', auth });
 
-  try {
-    const movieFileMetadata = {
-      name: movieFile.originalname,
-      parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
-    };
+//   try {
+//     const movieFileMetadata = {
+//       name: movieFile.originalname,
+//       parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
+//     };
 
-    const movieMedia = {
-      mimeType: movieFile.mimetype,
-      body: movieFile.buffer,
-    };
+//     const movieMedia = {
+//       mimeType: movieFile.mimetype,
+//       body: movieFile.buffer,
+//     };
 
-    const movieResponse = await drive.files.create({
-      resource: movieFileMetadata,
-      media: movieMedia,
-      fields: 'id',
-    });
+//     const movieResponse = await drive.files.create({
+//       resource: movieFileMetadata,
+//       media: movieMedia,
+//       fields: 'id',
+//     });
 
-    const imageFileMetadata = {
-      name: imageFile.originalname,
-      parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
-    };
+//     const imageFileMetadata = {
+//       name: imageFile.originalname,
+//       parents: ['14fQvQQh5UGjij5az_hOpvwIdKhMrSUK-']
+//     };
 
-    const imageMedia = {
-      mimeType: imageFile.mimetype,
-      body: imageFile.buffer,
-    };
+//     const imageMedia = {
+//       mimeType: imageFile.mimetype,
+//       body: imageFile.buffer,
+//     };
 
-    const imageResponse = await drive.files.create({
-      resource: imageFileMetadata,
-      media: imageMedia,
-      fields: 'id',
-    });
+//     const imageResponse = await drive.files.create({
+//       resource: imageFileMetadata,
+//       media: imageMedia,
+//       fields: 'id',
+//     });
 
-    return { movieId: movieResponse.data.id, imageId: imageResponse.data.id };
-  } catch (error) {
-    console.error('Error uploading files to Google Drive:', error);
-    throw error;
-  }
-}
+//     return { movieId: movieResponse.data.id, imageId: imageResponse.data.id };
+//   } catch (error) {
+//     console.error('Error uploading files to Google Drive:', error);
+//     throw error;
+//   }
+// }
 
 
 const maxAge = 1 * 24 * 60 * 60;
@@ -197,18 +197,18 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'imag
     const { newMovie, image } = req.files;
     const { title, description, language, quality, year, genre, type } = req.body;
 
-    const { movieId, imageId } = await uploadToDrive(newMovie, image);
+    // const { movieId, imageId } = await uploadToDrive(newMovie, image);
 
     const newMovieEntry = new Movie({
       title,
-      image: imageId,
+      image: image,
       description,
       language,
       quality,
       year,
       genre,
       type,
-      filePath: movieId
+      filePath: newMovie
     });
 
     const checkMovie = await Movie.findOne({ title });
