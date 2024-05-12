@@ -1,148 +1,110 @@
 const express = require('express');
 const User = require('../models/user');
-const path = require('path');
-const  jwt = require('jsonwebtoken');
-const cookie = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const { handleError, adminAuth, adminToken, checkAdmin } = require('../middleware/authmiddleware');
-const Movie  = require('../models/movies');
+const Movie = require('../models/movies');
 const multer = require('multer');
 
 const router = express.Router();
+router.use(cookieParser());
 
-router.get('*', checkAdmin );
+router.get('*', checkAdmin);
 
+const maxAge = 1 * 24 * 60 * 60;
 
-//movieUpload
+router.get('/login', async (req, res) => {
+  res.render('adminLogin');
+});
+
+router.get('/', adminAuth, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.render('admindash', { users });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Initialize movieUpload
 const movieStorage = multer.diskStorage({
   destination: './public/Movies/',
-  filename: function(req, file, cb){
+  filename: function (req, file, cb) {
     const fileName = `${file.originalname}`;
     cb(null, fileName);
   }
 });
 
-//initialize upload variable
 const upload = multer({ storage: movieStorage });
 
-
-
-const maxAge = 1 * 24 * 60 * 60;
-
-router.get('/login', async (req, res)=>{
- 
-  res.render('adminLogin')
-  
-}); 
-
-router.get('/', adminAuth, async (req, res)=>{
- 
-  try{
-    let user = await User.find();
-    res.render('admindash', {User : user});
-
-  }
-  catch(err){
-    console.log(err.message);  
-  }
-  
+router.get('/movies-upload', (req, res) => {
+  res.render('movie-upload');
 });
 
-router.get('/movies-upload',  (req, res)=>{
-  res.render('movie-upload')  
+router.get('/logout', (req, res) => {
+  res.clearCookie('GenesixAdmin');
+  res.redirect('/admin/login');
 });
 
-router.get('/logout',  (req, res)=>{
-  res.cookie('GenesixAdmin', '', {maxAge: 1});
-  res.redirect('/admin/login')
-});
-
-router.get('/user/:id', adminAuth, (req, res)=>{
-
+router.get('/user/:id', adminAuth, (req, res) => {
   const id = req.params.id;
- 
-  User.findById(id)  
-  .then(result => {
-    res.render('usersdetails', {user : result})
-
-    res.send(result);
-  })
-  .catch(err =>{
-    console.log(err.message);
-  })
-  
+  User.findById(id)
+    .then(result => {
+      res.render('usersdetails', { user: result });
+    })
+    .catch(err => {
+      console.error(err.message);
+      res.status(500).send('Internal Server Error');
+    });
 });
 
-router.delete('/:id', adminAuth, (req,res) =>{
+router.delete('/:id', adminAuth, (req, res) => {
   const id = req.params.id;
-
   User.findByIdAndDelete(id)
-  .then(result => {
-    res.json({ redirect : '/admin' })
-  })
-  .catch(err =>{
-    console.log(err.message)
-  })
- 
+    .then(result => {
+      res.json({ redirect: '/admin' });
+    })
+    .catch(err => {
+      console.error(err.message);
+      res.status(500).send('Internal Server Error');
+    });
 });
 
-router.post('/adminStatus/:id', adminAuth, async (req,res) =>{
+router.post('/adminStatus/:id', adminAuth, async (req, res) => {
   const id = req.params.id;
-
-  let { status } = req.body;
-
-  let user = await User.findById(id);
-
-  try{
-
-    let Status = await user.updateOne({ status })
-
-
-    res.json({ redirect : '/admin' })
-
- }
-  catch(err){
-    console.log(err.message); 
-  } 
- 
- 
+  const { status } = req.body;
+  try {
+    await User.findByIdAndUpdate(id, { status });
+    res.json({ redirect: '/admin' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-router.post('/login', async (req, res)=>{
- 
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
-  try{
-    const admin = await User.login({email, password});
-
-    if(admin.status == 'ADMIN'){
-
-      console.log(admin.status);
-
+  try {
+    const admin = await User.login({ email, password });
+    if (admin && admin.status === 'ADMIN') {
       const adminT = adminToken(admin._id);
-      res.cookie('GenesixAdmin', adminT, {httpOnly: true, maxAge: maxAge * 1000});
-      res.status(400).json({ admin: admin._id})
-    }else{
-
-      res.json({adminError: 'u are not an admin so piss off'});
-
+      res.cookie('GenesixAdmin', adminT, { httpOnly: true, maxAge: maxAge * 1000, secure: true });
+      res.redirect('/admin');
+    } else {
+      res.status(401).json({ adminError: 'You are not an admin' });
     }
-
-    // res.cookie('sign', token, {httpOnly: true, maxAge: maxAge * 1000});
-    
-  }
-  catch(err){
-    console.log(err);
+  } catch (err) {
+    console.error(err);
     let errors = handleError(err);
-    res.status(400).json({errors});
+    res.status(400).json({ errors });
   }
 });
-
 
 router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'image' }]), async (req, res) => {
   try {
     const { newMovie, image } = req.files;
     const { title, description, language, quality, year, genre, type } = req.body;
-
 
     const newMovieEntry = new Movie({
       title,
@@ -170,5 +132,4 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'imag
   }
 });
 
-
-module.exports = router; 
+module.exports = router;
