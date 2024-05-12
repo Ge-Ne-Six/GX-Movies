@@ -103,19 +103,20 @@ router.post('/login', async (req, res) => {
 
 router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'image' }]), async (req, res) => {
   try {
-    const { newMovie, image } = req.files;
+    const newMovieFile = req.files['newMovie'][0]; // Accessing the first file
+    const imageFile = req.files['image'][0]; // Accessing the first file
     const { title, description, language, quality, year, genre, type } = req.body;
 
     const newMovieEntry = new Movie({
       title,
-      image: image,
+      image: imageFile.path,
       description,
       language,
       quality,
       year,
       genre,
       type,
-      filePath: newMovie
+      filePath: newMovieFile.path
     });
 
     const checkMovie = await Movie.findOne({ title });
@@ -131,5 +132,6 @@ router.post('/movies-upload', upload.fields([{ name: 'newMovie' }, { name: 'imag
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 module.exports = router;
